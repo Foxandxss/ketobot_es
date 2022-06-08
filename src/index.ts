@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'typegram';
 import { availablePlugins } from './pluginRegistry';
@@ -22,7 +23,12 @@ bot.on('text', (ctx) => {
   usablePlugins.forEach((p) => p.exec(ctx, text));
 });
 
-bot.launch();
+async function main() {
+  await mongoose.connect(process.env.MONGO_CONNECTION_STRING || '');
+  bot.launch();
+}
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+main();

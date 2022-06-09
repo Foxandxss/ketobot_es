@@ -1,6 +1,6 @@
 import { Document, model, Schema } from 'mongoose';
 
-interface IAyuda {
+export interface IAyuda {
   trigger: string;
   answer: string;
 }

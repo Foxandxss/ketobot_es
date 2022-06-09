@@ -11,8 +11,7 @@ const bot: Telegraf<Context<Update>> = new Telegraf(
 );
 
 bot.on('text', (ctx) => {
-  const command = ctx.update.message.text.split(' ')[0];
-  const text = ctx.update.message.text.substr(command.length + 1);
+  const [command, ...text] = ctx.message.text.split(' ');
 
   if (!command || command.toLowerCase().indexOf('!') !== 0) return;
 
@@ -20,7 +19,7 @@ bot.on('text', (ctx) => {
     (p) => p.command === command.toLowerCase()
   );
 
-  usablePlugins.forEach((p) => p.exec(ctx, text));
+  usablePlugins.forEach((p) => p.exec(ctx, text.join(' ')));
 });
 
 async function main() {

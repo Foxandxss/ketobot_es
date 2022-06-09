@@ -10,6 +10,10 @@ export class AyudaPlugin implements Plugin {
     this.ayudaRepository = new AyudaRepository();
   }
 
+  canExec() {
+    return true;
+  }
+
   exec(ctx: Context, text: string) {
     if (!text) {
       return ctx.reply('Uso: *!ayuda <pregunta>*', { parse_mode: 'Markdown' });
@@ -21,6 +25,38 @@ export class AyudaPlugin implements Plugin {
         ctx.reply('Esa ayuda no existe');
       }
     });
+  }
+
+  parseAdminCommand(ctx: Context, text: string) {
+    const [_, operation, trigger, ...answer] = text.split(' ');
+    console.log(`${operation} - ${trigger}  - ${answer.join(' ')}`);
+    if (!operation || !trigger || !answer) {
+      return;
+    }
+    switch (operation) {
+      case 'add':
+        this.ayudaRepository
+          .create({ trigger, answer: answer.join(' ') })
+          .then(() => {
+            ctx.reply('Ayuda agregada');
+          })
+          .catch(() =>
+            ctx.reply('Ha ocurrido un error, consulta con @foxandxss')
+          );
+
+        break;
+      case 'update':
+        this.ayudaRepository
+          .update({ trigger, answer: answer.join(' ') })
+          .then(() => {
+            ctx.reply('Ayuda actualizada');
+          })
+          .catch(() =>
+            ctx.reply('Ha ocurrido un error, consulta con @foxandxss')
+          );
+
+        break;
+    }
   }
 
   async detailedHelp(): Promise<string> {

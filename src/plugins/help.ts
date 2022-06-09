@@ -7,6 +7,10 @@ export class HelpPlugin implements Plugin {
   command = '!comandos';
   description = 'Muestra esta ayuda';
 
+  canExec(): boolean {
+    return true;
+  }
+
   async exec(ctx: Context, text = ''): Promise<void> {
     if (!text) {
       let message =

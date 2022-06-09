@@ -1,4 +1,4 @@
-import { Ayuda, AyudaDocument } from '../schemas/ayuda.schema';
+import { Ayuda, AyudaDocument, IAyuda } from '../schemas/ayuda.schema';
 
 export class AyudaRepository {
   public async getAll(): Promise<AyudaDocument[]> {
@@ -6,19 +6,20 @@ export class AyudaRepository {
   }
 
   public async getByTrigger(trigger: string) {
-    console.log('Trigger', trigger);
     return Ayuda.findOne({ trigger }).exec();
   }
 
-  // public async save(ayuda: AyudaDocument): Promise<AyudaDocument> {
-  //   return this.ayudaModel.create(ayuda);
-  // }
+  public async create(ayuda: IAyuda): Promise<AyudaDocument> {
+    return Ayuda.create(ayuda);
+  }
 
-  // public async update(ayuda: AyudaDocument): Promise<AyudaDocument> {
-  //   return this.ayudaModel.updateOne({ _id: ayuda._id }, ayuda).exec();
-  // }
+  public async update(ayuda: IAyuda) {
+    const update = await this.getByTrigger(ayuda.trigger);
+    return Ayuda.updateOne({ _id: update?._id }, ayuda).exec();
+  }
 
-  // public async delete(ayuda: AyudaDocument): Promise<AyudaDocument> {
-  //   return this.ayudaModel.deleteOne({ _id: ayuda._id }).exec();
-  // }
+  public async delete(ayuda: IAyuda) {
+    const update = await this.getByTrigger(ayuda.trigger);
+    return Ayuda.deleteOne({ _id: update?._id }).exec();
+  }
 }

@@ -6,5 +6,5 @@ export interface Plugin {
   description: string;
 
   canExec(ctx: Context<Update>): boolean | Promise<boolean>;
-  exec(ctx: Context<Update>, textWithoutCommand?: string): void;
+  exec(ctx: Context<Update>, textWithoutCommand?: string, nick?: string): void;
 }

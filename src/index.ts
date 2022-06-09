@@ -11,15 +11,21 @@ const bot: Telegraf<Context<Update>> = new Telegraf(
 );
 
 bot.on('text', (ctx) => {
-  const [command, ...text] = ctx.message.text.split(' ');
-
+  // eslint-disable-next-line prefer-const
+  let [command, ...text] = ctx.message.text.split(' ');
   if (!command || command.toLowerCase().indexOf('!') !== 0) return;
+  let nick: string;
+
+  if (text.length > 0 && text[text.length - 1].startsWith('@')) {
+    nick = text[text.length - 1];
+    text = text.slice(0, -1);
+  }
 
   const usablePlugins = availablePlugins.filter(
     (p) => p.command === command.toLowerCase()
   );
 
-  usablePlugins.forEach((p) => p.exec(ctx, text.join(' ')));
+  usablePlugins.forEach((p) => p.exec(ctx, text.join(' '), nick));
 });
 
 async function main() {

@@ -14,13 +14,20 @@ export class AyudaPlugin implements Plugin {
     return true;
   }
 
-  exec(ctx: Context, text: string) {
+  exec(ctx: Context, text: string, nick: string) {
     if (!text) {
-      return ctx.reply('Uso: *!ayuda <pregunta>*', { parse_mode: 'Markdown' });
+      return ctx.reply('Uso: *!ayuda <pregunta> (<@nick>)*', {
+        parse_mode: 'Markdown'
+      });
     }
+
     this.ayudaRepository.getByTrigger(text).then((r) => {
       if (r) {
-        ctx.reply(r.answer);
+        if (nick) {
+          ctx.reply(`${nick} - ${r.answer}`);
+        } else {
+          ctx.reply(r.answer);
+        }
       } else {
         ctx.reply('Esa ayuda no existe');
       }

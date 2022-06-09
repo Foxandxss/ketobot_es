@@ -1,13 +1,11 @@
-import { Document, Model, model, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose';
 
 interface IAyuda {
   trigger: string;
   answer: string;
 }
 
-type AyudaModel = Model<IAyuda>;
-
-const ayudaSchema = new Schema<IAyuda, AyudaModel>(
+const ayudaSchema = new Schema<IAyuda>(
   {
     trigger: { type: String, required: true },
     answer: { type: String, required: true }
@@ -15,5 +13,5 @@ const ayudaSchema = new Schema<IAyuda, AyudaModel>(
   { collection: 'ayuda' }
 );
 
-export const Ayuda = model<IAyuda, AyudaModel>('Ayuda', ayudaSchema);
+export const Ayuda = model<IAyuda>('Ayuda', ayudaSchema);
 export type AyudaDocument = Document & IAyuda;

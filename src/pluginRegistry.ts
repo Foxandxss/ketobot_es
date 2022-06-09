@@ -1,6 +1,8 @@
-import { AyudaPlugin } from './plugins/ayuda';
+import { ayudaPlugin } from './plugins/ayuda';
+import { helpPlugin } from './plugins/help';
 import { Plugin } from './plugins/plugin.interface';
 
 export const availablePlugins: Plugin[] = [];
 
-availablePlugins.push(new AyudaPlugin('!ayuda'));
+availablePlugins.push(ayudaPlugin);
+availablePlugins.push(helpPlugin);

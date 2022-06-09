@@ -5,5 +5,5 @@ export interface Plugin {
   command: string;
   description: string;
 
-  exec(ctx: Context<Update>, textWithoutCommand: string): void;
+  exec(ctx: Context<Update>, textWithoutCommand?: string): void;
 }

@@ -23,6 +23,7 @@ export class AdminPlugin implements Plugin {
   async exec(ctx: Context<Update>, text = '') {
     const canExec = await this.canExec(ctx);
     if (!canExec) {
+      ctx.reply('No tienes permisos para hacer eso!');
       return;
     }
     const plugin = this.extractPluginName(text);

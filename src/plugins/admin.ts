@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 import { Update } from 'typegram';
 import { UsersRepository } from '../database/repositories/users.repository';
-import { ayudaPlugin } from './ayuda';
+import { availablePlugins } from '../pluginRegistry';
 import { Plugin } from './plugin.interface';
 
 export class AdminPlugin implements Plugin {
@@ -36,9 +36,10 @@ export class AdminPlugin implements Plugin {
   }
 
   private delegateToPlugin(ctx: Context, plugin: string, text: string) {
-    switch (plugin) {
-      case 'ayuda':
-        ayudaPlugin.parseAdminCommand(ctx, text);
+    const cmd = availablePlugins.find((p) => p.command === `!${p.command}`);
+
+    if (cmd && cmd.parseAdminCommand) {
+      cmd.parseAdminCommand(ctx, text);
     }
   }
 }

@@ -1,6 +1,5 @@
 import { Context } from 'telegraf';
 import { availablePlugins } from '../pluginRegistry';
-import { ayudaPlugin } from './ayuda';
 import { Plugin } from './plugin.interface';
 
 export class HelpPlugin implements Plugin {
@@ -27,11 +26,14 @@ export class HelpPlugin implements Plugin {
   }
 
   private async getCommandFunction(text: string) {
-    switch (text.toLowerCase()) {
-      case 'ayuda':
-        return await ayudaPlugin.detailedHelp();
-      default:
-        return 'El comando no existe';
+    const cmd = availablePlugins.find(
+      (p) => p.command === `!${text.toLowerCase()}`
+    );
+
+    if (cmd && cmd.detailedHelp) {
+      return cmd.detailedHelp();
+    } else {
+      return 'El comando no existe';
     }
   }
 }

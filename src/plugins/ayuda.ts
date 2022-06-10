@@ -54,7 +54,7 @@ export class AyudaPlugin implements Plugin {
         break;
       case 'update':
         this.ayudaRepository
-          .update({ trigger, answer: answer.join(' ') })
+          .findAndUpdate({ trigger, answer: answer.join(' ') })
           .then(() => {
             ctx.reply('Ayuda actualizada');
           })

@@ -1,25 +1,28 @@
-import { Ayuda, AyudaDocument, IAyuda } from '../schemas/ayuda.schema';
+import { Ayuda, IAyuda } from '../schemas/ayuda.schema';
+import { GenericRepository } from './generic.repository';
 
-export class AyudaRepository {
-  public async getAll(): Promise<AyudaDocument[]> {
-    return Ayuda.find({}).exec();
+export class AyudaRepository extends GenericRepository<IAyuda> {
+  constructor() {
+    super(Ayuda);
   }
 
   public async getByTrigger(trigger: string) {
     return Ayuda.findOne({ trigger }).exec();
   }
 
-  public async create(ayuda: IAyuda): Promise<AyudaDocument> {
-    return Ayuda.create(ayuda);
+  public async findAndUpdate(ayuda: IAyuda): Promise<unknown> {
+    const obj = await this.getByTrigger(ayuda.trigger);
+    if (obj) {
+      return super.update(obj._id, ayuda);
+    }
+    return null;
   }
 
-  public async update(ayuda: IAyuda) {
-    const update = await this.getByTrigger(ayuda.trigger);
-    return Ayuda.updateOne({ _id: update?._id }, ayuda).exec();
-  }
-
-  public async delete(ayuda: IAyuda) {
-    const update = await this.getByTrigger(ayuda.trigger);
-    return Ayuda.deleteOne({ _id: update?._id }).exec();
+  public async findAndDelete(ayuda: IAyuda) {
+    const obj = await this.getByTrigger(ayuda.trigger);
+    if (obj) {
+      return super.delete(obj._id);
+    }
+    return null;
   }
 }

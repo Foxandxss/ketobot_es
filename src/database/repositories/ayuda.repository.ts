@@ -1,7 +1,7 @@
 import { Ayuda, IAyuda } from '../schemas/ayuda.schema';
-import { GenericRepository } from './generic.repository';
+import { BaseRepository } from './base.repository';
 
-export class AyudaRepository extends GenericRepository<IAyuda> {
+export class AyudaRepository extends BaseRepository<IAyuda> {
   constructor() {
     super(Ayuda);
   }

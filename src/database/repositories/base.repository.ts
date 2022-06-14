@@ -1,6 +1,6 @@
 import { Model, Types } from 'mongoose';
 
-export class GenericRepository<E> {
+export class BaseRepository<E> {
   constructor(private model: Model<E>) {}
   public async getAll(): Promise<E[]> {
     return this.model.find({}).exec();
@@ -14,8 +14,7 @@ export class GenericRepository<E> {
     return this.model.updateOne({ _id: id }, payload).exec();
   }
 
-  public async delete(id: Types.ObjectId): Promise<boolean> {
-    await this.model.deleteOne({ _id: id }).exec();
-    return true;
+  public async delete(id: Types.ObjectId): Promise<unknown> {
+    return this.model.deleteOne({ _id: id }).exec();
   }
 }

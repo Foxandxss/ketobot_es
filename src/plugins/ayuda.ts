@@ -1,4 +1,5 @@
 import { Context } from 'telegraf';
+import { Update } from 'typegram';
 import { AyudaRepository } from '../database/repositories/ayuda.repository';
 import { Plugin } from './plugin.interface';
 
@@ -34,7 +35,7 @@ export class AyudaPlugin implements Plugin {
     });
   }
 
-  parseAdminCommand(ctx: Context, text: string) {
+  parseAdminCommand(ctx: Context<Update>, text: string): void {
     const [_, operation, trigger, ...answer] = text.split(' ');
     console.log(`${operation} - ${trigger}  - ${answer.join(' ')}`);
     if (!operation || !trigger || !answer) {

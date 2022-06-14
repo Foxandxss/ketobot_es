@@ -6,7 +6,7 @@ export interface Plugin {
   description: string;
 
   detailedHelp?(): Promise<string>;
-  parseAdminCommand?(ctx: Context<Update>, text: string): Promise<void>;
+  parseAdminCommand?(ctx: Context<Update>, text: string): void;
 
   canExec(ctx: Context<Update>): boolean | Promise<boolean>;
   exec(ctx: Context<Update>, textWithoutCommand?: string, nick?: string): void;

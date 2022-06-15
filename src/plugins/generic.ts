@@ -6,6 +6,8 @@ import { Plugin } from './plugin.interface';
 export class GenericPlugin implements Plugin {
   description = 'Foo';
   genericRepository: GenericRepository;
+  showHelp = true;
+
   constructor() {
     this.genericRepository = new GenericRepository();
   }
@@ -57,7 +59,7 @@ export class GenericPlugin implements Plugin {
 
   async detailedHelp(): Promise<string> {
     const items = await this.genericRepository.getAll();
-    let message = `Comandos disponible para ayuda:\n`;
+    let message = `\nAdemás listado de comandos genéricos:\n\n`;
 
     items.map((i, index) => {
       message += `_${i.trigger}_`;

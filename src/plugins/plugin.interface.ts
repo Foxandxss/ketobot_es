@@ -4,6 +4,7 @@ import { Update } from 'typegram';
 export interface Plugin {
   command?: string;
   description: string;
+  showHelp: boolean;
 
   detailedHelp?(): Promise<string>;
 

@@ -6,14 +6,6 @@ export class GenericRepository extends BaseRepository<IGeneric> {
     super(Generic);
   }
 
-  // public async updateOrCreate(payload: IGeneric) {
-  //   const command = await this.getByTrigger(payload.trigger);
-  //   if (command) {
-  //     return super.update(command._id, payload);
-  //   }
-  //   return super.create(payload);
-  // }
-
   public async getByTrigger(trigger: string) {
     return Generic.findOne({ trigger }).exec();
   }

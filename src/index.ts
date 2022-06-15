@@ -1,14 +1,6 @@
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { Context, Telegraf } from 'telegraf';
-import { Update } from 'typegram';
+import { bot } from './bot';
 import { availablePlugins, genericPlugin } from './pluginRegistry';
-
-dotenv.config();
-
-const bot: Telegraf<Context<Update>> = new Telegraf(
-  process.env.BOT_TOKEN || ''
-);
 
 bot.on('text', (ctx) => {
   // eslint-disable-next-line prefer-const

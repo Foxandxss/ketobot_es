@@ -1,10 +1,12 @@
 import { Context } from 'telegraf';
-import { availablePlugins } from '../pluginRegistry';
+import { bot } from '../bot';
+import { availablePlugins, genericPlugin } from '../pluginRegistry';
 import { Plugin } from './plugin.interface';
 
 export class HelpPlugin implements Plugin {
-  command = '!comandos';
+  command = '!ayuda';
   description = 'Muestra esta ayuda';
+  showHelp = true;
 
   canExec(): boolean {
     return true;
@@ -13,15 +15,30 @@ export class HelpPlugin implements Plugin {
   async exec(ctx: Context, content = ''): Promise<void> {
     if (!content) {
       let message =
-        'Comandos disponibles.\nPara más información usar: *!comandos <comando>*\n\n';
-      availablePlugins.map(
-        (p) => (message += `_${p.command}_ - ${p.description}\n`)
-      );
-      ctx.reply(message, { parse_mode: 'Markdown' });
-    } else {
-      ctx.reply(await this.getCommandFunction(content), {
-        parse_mode: 'Markdown'
+        // 'Comandos disponibles.\nPara más información usar: *!ayuda <comando>*\n\n';
+        'Comandos disponibles\n\n';
+      availablePlugins.map((p) => {
+        if (p.showHelp) {
+          return (message += `_${p.command}_ - ${p.description}\n`);
+        }
       });
+      message += await genericPlugin.detailedHelp();
+      console.log(ctx);
+      if (ctx.message?.from?.id) {
+        bot.telegram.sendMessage(ctx.message.from.id, message, {
+          parse_mode: 'Markdown'
+        });
+      }
+    } else {
+      if (ctx.message?.from?.id) {
+        bot.telegram.sendMessage(
+          ctx.message.from.id,
+          await this.getCommandFunction(content),
+          {
+            parse_mode: 'Markdown'
+          }
+        );
+      }
     }
   }
 

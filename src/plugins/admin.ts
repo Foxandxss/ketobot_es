@@ -1,12 +1,14 @@
 import { Context } from 'telegraf';
 import { Update } from 'typegram';
 import { UsersRepository } from '../database/repositories/users.repository';
-import { availablePlugins, genericPlugin } from '../pluginRegistry';
+import { genericPlugin } from '../pluginRegistry';
 import { Plugin } from './plugin.interface';
 
 export class AdminPlugin implements Plugin {
   command = '!admin';
   description = 'Opciones de administrador';
+  showHelp = false;
+
   usersRepository: UsersRepository;
 
   constructor() {

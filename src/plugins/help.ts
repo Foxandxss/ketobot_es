@@ -10,8 +10,8 @@ export class HelpPlugin implements Plugin {
     return true;
   }
 
-  async exec(ctx: Context, text = ''): Promise<void> {
-    if (!text) {
+  async exec(ctx: Context, content = ''): Promise<void> {
+    if (!content) {
       let message =
         'Comandos disponibles.\nPara más información usar: *!comandos <comando>*\n\n';
       availablePlugins.map(
@@ -19,7 +19,7 @@ export class HelpPlugin implements Plugin {
       );
       ctx.reply(message, { parse_mode: 'Markdown' });
     } else {
-      ctx.reply(await this.getCommandFunction(text), {
+      ctx.reply(await this.getCommandFunction(content), {
         parse_mode: 'Markdown'
       });
     }

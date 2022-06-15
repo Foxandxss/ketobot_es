@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'typegram';
-import { availablePlugins } from './pluginRegistry';
+import { availablePlugins, genericPlugin } from './pluginRegistry';
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ bot.on('text', (ctx) => {
   // eslint-disable-next-line prefer-const
   let [command, ...text] = ctx.message.text.split(' ');
   if (!command || command.toLowerCase().indexOf('!') !== 0) return;
-  let nick: string;
+  let nick!: string;
 
   if (text.length > 0 && text[text.length - 1].startsWith('@')) {
     nick = text[text.length - 1];
@@ -25,7 +25,11 @@ bot.on('text', (ctx) => {
     (p) => p.command === command.toLowerCase()
   );
 
-  usablePlugins.forEach((p) => p.exec(ctx, text.join(' '), nick));
+  if (usablePlugins.length === 0) {
+    genericPlugin.exec(ctx, command.slice(1), nick);
+  } else {
+    usablePlugins.forEach((p) => p.exec(ctx, text.join(' '), nick));
+  }
 });
 
 async function main() {

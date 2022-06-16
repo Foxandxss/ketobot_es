@@ -6,10 +6,9 @@ import { Plugin } from './plugin.interface';
 export class HelpPlugin implements Plugin {
   command = '!ayuda';
   description = 'Muestra esta ayuda';
-  showHelp = true;
 
-  canExec(): boolean {
-    return true;
+  async canExec(): Promise<boolean> {
+    return Promise.resolve(true);
   }
 
   async exec(ctx: Context, content = ''): Promise<void> {
@@ -17,13 +16,15 @@ export class HelpPlugin implements Plugin {
       let message =
         // 'Comandos disponibles.\nPara más información usar: *!ayuda <comando>*\n\n';
         'Comandos disponibles\n\n';
-      availablePlugins.map((p) => {
-        if (p.showHelp) {
-          return (message += `_${p.command}_ - ${p.description}\n`);
-        }
-      });
+      await Promise.all(
+        availablePlugins.map(async (p) => {
+          if (await p.canExec(ctx)) {
+            message += `_${p.command}_ - ${p.description}\n`;
+          }
+        })
+      );
       message += await genericPlugin.detailedHelp();
-      console.log(ctx);
+
       if (ctx.message?.from?.id) {
         bot.telegram.sendMessage(ctx.message.from.id, message, {
           parse_mode: 'Markdown'

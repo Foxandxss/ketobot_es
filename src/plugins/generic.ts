@@ -6,14 +6,13 @@ import { Plugin } from './plugin.interface';
 export class GenericPlugin implements Plugin {
   description = 'Foo';
   genericRepository: GenericRepository;
-  showHelp = true;
 
   constructor() {
     this.genericRepository = new GenericRepository();
   }
 
-  canExec() {
-    return true;
+  async canExec(): Promise<boolean> {
+    return Promise.resolve(true);
   }
 
   exec(ctx: Context, content: string, nick: string) {
@@ -31,13 +30,8 @@ export class GenericPlugin implements Plugin {
   }
 
   parseAdminCommand(ctx: Context<Update>, content: string): void {
-    // console.log('content', content);
     const pattern = /(\w+)\s*(\w+)\s+(.*)/s;
     const [_, operation, trigger, answer] = pattern.exec(content) || [];
-    // console.log(`${operation} <-> ${trigger} <-> ${answer.join(' ')}`);
-    console.log('Operation: ', operation);
-    console.log('Trigger: ', trigger);
-    console.log('Answer: ', answer);
     if (!operation || !trigger || !answer) {
       return;
     }

@@ -7,7 +7,6 @@ import { Plugin } from './plugin.interface';
 export class AdminPlugin implements Plugin {
   command = '!admin';
   description = 'Opciones de administrador';
-  showHelp = false;
 
   usersRepository: UsersRepository;
 

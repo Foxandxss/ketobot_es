@@ -64,6 +64,8 @@ export class GenericPlugin implements Plugin {
     const items = await this.genericRepository.getAll();
     let message = `\nAdemás listado de comandos genéricos:\n\n`;
 
+    items.sort((a, b) => a.trigger.localeCompare(b.trigger));
+
     items.map((i, index) => {
       message += `_${i.trigger}_`;
       if (index !== items.length - 1) {

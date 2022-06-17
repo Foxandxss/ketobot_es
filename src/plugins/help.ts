@@ -51,7 +51,7 @@ export class HelpPlugin implements Plugin {
     if (cmd && cmd.detailedHelp) {
       return cmd.detailedHelp();
     } else {
-      return 'El comando no existe';
+      return 'El comando no existe o no tiene ayuda';
     }
   }
 }

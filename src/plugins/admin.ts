@@ -27,7 +27,17 @@ export class AdminPlugin implements Plugin {
       ctx.reply('No tienes permisos para hacer eso!');
       return;
     }
+
+    if (!content) {
+      ctx.reply(this.detailedHelp());
+      return;
+    }
+
     genericPlugin.parseAdminCommand(ctx, content);
+  }
+
+  detailedHelp(): string {
+    return '!admin <add/update/delete> <palabra> <contenido>';
   }
 }
 

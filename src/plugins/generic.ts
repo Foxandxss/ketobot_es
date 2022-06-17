@@ -30,14 +30,19 @@ export class GenericPlugin implements Plugin {
   }
 
   parseAdminCommand(ctx: Context<Update>, content: string): void {
-    const pattern = /(\w+)\s*(\w+)\s+(.*)/s;
-    const [_, operation, trigger, answer] = pattern.exec(content) || [];
-    if (!operation || !trigger || !answer) {
+    const pattern = /(\w+)\s*(\w+)\s*(.*)/s;
+
+    const [, operation, trigger, answer] = pattern.exec(content) || [];
+
+    if (!operation || !trigger) {
       return;
     }
     switch (operation) {
       case 'add':
       case 'update':
+        if (!answer) {
+          break;
+        }
         this.genericRepository
           .findAndUpdate({ trigger, answer })
           .then(() => {
@@ -48,6 +53,10 @@ export class GenericPlugin implements Plugin {
           );
 
         break;
+      case 'delete':
+        this.genericRepository.findAndDelete(trigger).then(() => {
+          ctx.reply('Comando eliminado con éxito');
+        });
     }
   }
 

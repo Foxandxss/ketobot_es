@@ -18,8 +18,8 @@ export class GenericRepository extends BaseRepository<IGeneric> {
     return super.create(generic);
   }
 
-  public async findAndDelete(generic: IGeneric) {
-    const obj = await this.getByTrigger(generic.trigger);
+  public async findAndDelete(trigger: string) {
+    const obj = await this.getByTrigger(trigger);
     if (obj) {
       return super.delete(obj._id);
     }

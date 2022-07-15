@@ -16,7 +16,7 @@ export class GenericPlugin implements Plugin {
   }
 
   exec(ctx: Context, content: string, nick: string) {
-    this.genericRepository.getByTrigger(content).then((r) => {
+    this.genericRepository.getByTrigger(content).then(async (r) => {
       if (r) {
         if (nick) {
           ctx.reply(`${nick}\n${r.answer}`, { parse_mode: 'Markdown' });
@@ -24,7 +24,10 @@ export class GenericPlugin implements Plugin {
           ctx.reply(r.answer);
         }
       } else {
-        ctx.reply('Ese comando no existe');
+        let message =
+          'Ese comando no existe\n\nPrueba con alguno de los siguientes comandos:\n\n';
+        message += await this.listOfCommands();
+        ctx.reply(message, { parse_mode: 'Markdown' });
       }
     });
   }
@@ -61,9 +64,15 @@ export class GenericPlugin implements Plugin {
   }
 
   async detailedHelp(): Promise<string> {
-    const items = await this.genericRepository.getAll();
     let message = `\nAdemás listado de comandos genéricos:\n\n`;
+    message += await this.listOfCommands();
 
+    return message;
+  }
+
+  private async listOfCommands(): Promise<string> {
+    const items = await this.genericRepository.getAll();
+    let message = '';
     items.sort((a, b) => a.trigger.localeCompare(b.trigger));
 
     items.map((i, index) => {

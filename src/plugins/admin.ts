@@ -32,7 +32,6 @@ export class AdminPlugin implements Plugin {
       ctx.reply(this.detailedHelp());
       return;
     }
-
     genericPlugin.parseAdminCommand(ctx, content);
   }
 

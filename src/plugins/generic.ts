@@ -21,7 +21,7 @@ export class GenericPlugin implements Plugin {
         if (nick) {
           ctx.reply(`${nick}\n${r.answer}`, { parse_mode: 'Markdown' });
         } else {
-          ctx.reply(r.answer);
+          ctx.reply(r.answer, { parse_mode: 'HTML' });
         }
       } else {
         let message =
